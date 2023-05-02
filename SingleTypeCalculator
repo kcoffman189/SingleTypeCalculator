@@ -1,0 +1,45 @@
+import pandas as pd
+import numpy as np
+from IPython.display import Image
+from openpyxl import load_workbook
+
+# pd.read_csv(sio, dtype={"user_id": int, "username": object}
+
+# pop_data.insert(0,"Random",random)
+
+image = Image(filename='Second_Look_image_6month.png')
+
+# Stat Calc Variables
+z_factor = 1.96
+p_factor = .05
+a_factor = .02
+z_squared = z_factor**2 
+a_squared = a_factor**2
+p_two = .0475
+z_p = .182476
+
+# Use 180 for 6 month annualization period.  This is the number used in the Second Look calculator.
+# Use 360 for the 12 month annualization period. This is the number used in the Second Look calculator.
+d_annual = 180
+
+# days = 28
+
+def loans(loan_count,days):
+    print("DHIM QC Analyst Stat Calculator\n________________________________\n")
+
+    display(image)
+
+    print(f"Days in Period: {days}")
+
+    print("Loans Available:",loan_count)
+    loans_n = d_annual*(loan_count/days)
+    loans_percent_to_select = (100/loans_n)*((z_squared*loans_n*p_two)/((a_squared*loans_n)+z_p))
+    print("Percent to Select:", np.round(loans_percent_to_select,decimals = 4),"%")
+    loans_needed = np.ceil((loans_percent_to_select/100)*loan_count)
+    loans_needed_round = np.ceil(loans_needed).astype(int)
+    print("Loan Count Needed:", loans_needed_round)
+    print("\n")
+
+# input the loan count and number of days in the period below as:
+# loans(loan_count,days)
+print(loans(0,28))
